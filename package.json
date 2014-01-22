@@ -21,8 +21,8 @@
     "url": "https://github.com/aq1018/logicbox/issues"
   },
   "homepage": "https://github.com/aq1018/logicbox",
-
   "dependencies": {
-    "async": "*"
+    "async": "*",
+    "underscore": "~1.5.2"
   }
 }
