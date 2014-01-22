@@ -1,0 +1,28 @@
+{
+  "name": "logicbox",
+  "version": "0.1.0",
+  "description": "Implement application boundary interfaces with a chain of responsibility",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/aq1018/logicbox.git"
+  },
+  "keywords": [
+    "application",
+    "boundary",
+    "interfaces"
+  ],
+  "author": "Aaron Qian <aq1018@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aq1018/logicbox/issues"
+  },
+  "homepage": "https://github.com/aq1018/logicbox",
+
+  "dependencies": {
+    "async": "*"
+  }
+}
