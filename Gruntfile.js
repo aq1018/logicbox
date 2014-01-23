@@ -48,11 +48,11 @@ module.exports = function(grunt) {
         },
 
         exec: {
-            publishNpm: {
+            releaseNpm: {
                 cmd: "npm publish ."
             },
 
-            publishBower: {
+            releaseBower: {
                 cmd: "bower register logicbox <%= globalConfig.repo %>"
             }
         }
@@ -67,5 +67,7 @@ module.exports = function(grunt) {
     grunt.registerTask('test', ['jshint', 'mochacov:test']);
     grunt.registerTask('cov', ['jshint', 'mochacov:covHtml']);
     grunt.registerTask('ci', ['test', 'mochacov:coveralls']);
-    grunt.registerTask('publish', ['exec:publishNpm', 'exec:publishBower']);
+    grunt.registerTask('release:npm', ['exec:releaseNpm']);
+    grunt.registerTask('release:bower', ['exec:releaseNpm']);
+    grunt.registerTask('release', ['release:npm', 'release:bower']);
 };
