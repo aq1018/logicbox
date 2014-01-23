@@ -63,3 +63,60 @@ server.post('/users', function(req, res) {
 
 ```
 
+Actions
+-------
+
+An `action` encapsulates a peiece of business logic, or use case. It must contain at least one `handler`, and can optionally contain one or more `pre` / `post` processors and `observer`s. It is configured in `config.actions` object.
+
+The simplest example:
+
+```javascript
+// config.js
+module.exports = {
+  actions: {
+    createUser: 'usecases/user/create'
+  }
+}
+```
+
+This example creates an action named `createUser` and the handler is specified in `usecases/user/create`. The value of `actions` options can contain:
+
+* String - Logicbox `requires` supplied string by appending `options.basePath`.
+* Function - It is used directly. Signature: `function(env, input, cb){...}`.
+* Object - See below.
+
+Specifying an action with `action object`:
+
+```javascript
+// config.js
+module.exports = {
+  actions: {
+    createPost: {
+      handler: 'usecases/post/create',
+      pre:  [
+        'preprocessors/authenticate',
+        'preprocessors/authorize'
+      ],
+      post: [
+        'postprocessors/convert-to-api-objects',
+        'postprocessors/add-hypermedia-links',
+        'postprocessors/convert-to-json'
+      ],
+      observer: [
+        'observers/log-event',
+        'observers/send-email'
+      ]
+  }
+}
+```
+
+The `action object` must have a `handler`, and can optionally specify `pre`, `post`, `observer` keys. `handler` can accept string or function. `pre`, `post`, `observer` can accept string, function or array.
+
+Execution Order
+---------------
+
+The order is: `pre -> handler -> post`. Each processor / handler's output becomes the input of the next. If an error is returned in any part of the chain, the execution is halted, and the callback function will be run with the error. If the entire chain is completed, the callback is invoked with the output of the last handler / processor in the chain.
+
+`observer`s will be invoked in parallel after the completion of the `pre -> handler -> post` chain. observers have the signature of `function(env, output, err);` and they do not have callbacks or return anything.
+
+
