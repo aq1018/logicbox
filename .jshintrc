@@ -118,7 +118,6 @@
     "predef"        : [         // Extra globals.
         "describe",
         "it",
-        "expect",
         "before",
         "after",
         "beforeEach",
