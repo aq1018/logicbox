@@ -4,7 +4,7 @@ logicbox.js
 [![Build Status](https://travis-ci.org/aq1018/logicbox.png?branch=master)](https://travis-ci.org/aq1018/logicbox)
 [![Coverage Status](https://coveralls.io/repos/aq1018/logicbox/badge.png)](https://coveralls.io/r/aq1018/logicbox)
 
-Logicbox is a utility to organize your application logic into managable components seprate from your transport layer. The concept of this module is inspired by [Architecture the Lost Years keynote](http://www.confreaks.com/videos/759-rubymidwest2011-keynote-architecture-the-lost-years) by (Robert Martin)[http://en.wikipedia.org/wiki/Robert_Cecil_Martin] and the implementation is inspired by [substation](https://github.com/snusnu/substation).
+Logicbox is a utility to organize your application logic into managable components seprate from your transport layer. The concept of this module is inspired by [Architecture the Lost Years keynote](http://www.confreaks.com/videos/759-rubymidwest2011-keynote-architecture-the-lost-years) by [Robert Martin](http://en.wikipedia.org/wiki/Robert_Cecil_Martin) and the implementation is inspired by [substation](https://github.com/snusnu/substation).
 
 
 Installation
