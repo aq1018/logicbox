@@ -21,10 +21,12 @@
     "name": "Aaron Qian",
     "email": "aq1018@gmail.com"
   },
-  "license": [{
-    "type": "MIT",
-    "url": "https://github.com/aq1018/logicbox/blob/master/LICENSE"
-  }],
+  "license": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/aq1018/logicbox/blob/master/LICENSE"
+    }
+  ],
   "bugs": {
     "url": "https://github.com/aq1018/logicbox/issues"
   },
@@ -41,6 +43,7 @@
     "grunt-cli": "~0.1.12",
     "grunt-release": "~0.6.0",
     "grunt-contrib-jshint": "~0.8.0",
-    "grunt-coveralls": "~0.2.0"
+    "grunt-coveralls": "~0.2.0",
+    "grunt-mocha-test": "~0.8.2"
   }
 }

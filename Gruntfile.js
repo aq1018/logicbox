@@ -15,7 +15,6 @@ module.exports = function(grunt) {
             test: {
                 options: {
                     reporter: 'spec',
-                    require: 'test/support/blanket'
                 },
                 src: ['test/**/*.test.js']
             }
