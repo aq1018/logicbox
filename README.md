@@ -120,3 +120,37 @@ The order is: `pre -> handler -> post`. Each processor / handler's output become
 `observer`s will be invoked in parallel after the completion of the `pre -> handler -> post` chain. observers have the signature of `function(env, output, err);` and they do not have callbacks or return anything.
 
 
+Signatures
+----------
+
+Pre / Post processors and handlers all have the following signature:
+
+`function(env, input, callback)`
+
+The `callback` is a standard node.js style callback, and has the following signature:
+
+`function(error, output)`
+
+Observers have the following signature:
+
+`function(env, output, error)`
+
+Example Handler
+---------------
+
+```javascript
+module.exports = function(env, input, callback) {
+  // hopefully the input is santized by a pre-processor
+  // and is data-massaged into something usable when it reaches here.
+  env.models.User.create(input, function(error, user) {
+    // something went wrong, let Logicbox know.
+    if(err) { return callback(error); }
+
+    // everyting is peachy, continue down the chain.
+    // maybe a post process will use `user` as their input,
+    // or this could be the end of the chain, in that case
+    // the dispatcher's callback will get the result.
+    callback(null, user);
+  });
+}
+```
