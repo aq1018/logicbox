@@ -37,28 +37,34 @@ var observer = function(env, output, err) {
     }
 };
 
-var config = {
-    testHandler: hello,
+var options = {
+    basePath: require('path').join(process.cwd(), 'test'),
 
-    testObserver: {
-        handler: hello,
-        observer: observer
-    },
-    hello3: {
-        handler: hello,
-        pre: [ hello ],
-        post: [ world ],
-        observer: observer
-    },
-    hello4: {
-        handler: fail,
-        pre: [ hello ],
-        post: [ world ],
-        observer: observer
+    actions: {
+        testHandler: hello,
+
+        testRequire: 'usecases/hello',
+
+        testObserver: {
+            handler: hello,
+            observer: observer
+        },
+        hello3: {
+            handler: hello,
+            pre: [ hello ],
+            post: [ world ],
+            observer: observer
+        },
+        hello4: {
+            handler: fail,
+            pre: [ hello ],
+            post: [ world ],
+            observer: observer
+        }
     }
 };
 
-var dispatch = logicbox(env, config);
+var dispatch = logicbox(env, options);
 
 
 describe("logicbox", function() {
@@ -69,6 +75,12 @@ describe("logicbox", function() {
     describe("handler", function() {
         it("calls the handler", function() {
             dispatch('testHandler', 'world', function(err, output) {
+                expect(output).to.eql('hello world');
+            });
+        });
+
+        it("requires the handler", function() {
+            dispatch('testRequire', 'world', function(err, output) {
                 expect(output).to.eql('hello world');
             });
         });

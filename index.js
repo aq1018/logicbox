@@ -7,12 +7,8 @@ var DEFAULT_OPTIONS = {
     basePath: process.cwd()
 };
 
-module.exports = function(env, actions, options) {
-    options = _.extend({}, DEFAULT_OPTIONS, options);
-    actions = _.reduce(actions, function(memo, action, name) {
-        memo[name] = compose(action);
-        return memo;
-    }, {});
+module.exports = function(env, options) {
+    var actions;
 
     function _require(file) {
         file = require('path').resolve(options.basePath, file);
@@ -25,7 +21,6 @@ module.exports = function(env, actions, options) {
 
         throw new TypeError('only functions or strings are allowed.');
     }
-
 
     function array() {
         return _.chain(arguments).flatten().compact().value();
@@ -65,7 +60,14 @@ module.exports = function(env, actions, options) {
         };
     }
 
-    function dispatch(name, input, cb) {
+    options = _.extend({}, DEFAULT_OPTIONS, options);
+
+    actions = _.reduce(options.actions, function(memo, action, name) {
+        memo[name] = compose(action);
+        return memo;
+    }, {});
+
+    return function dispatch(name, input, cb) {
         var handler = actions[name];
 
         if(!handler) {
@@ -73,7 +75,5 @@ module.exports = function(env, actions, options) {
         }
 
         handler(input, cb);
-    }
-
-    return dispatch;
+    };
 };
