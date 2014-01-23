@@ -7,10 +7,11 @@ var DEFAULT_OPTIONS = {
     basePath: process.cwd()
 };
 
-module.exports = function(actions, env, options) {
+module.exports = function(env, actions, options) {
     options = _.extend({}, DEFAULT_OPTIONS, options);
-    actions = _.reduce(actions, function(memo, name) {
-        memo[name] = compose(actions[name]);
+    actions = _.reduce(actions, function(memo, action, name) {
+        memo[name] = compose(action);
+        return memo;
     }, {});
 
     function _require(file) {
@@ -25,13 +26,18 @@ module.exports = function(actions, env, options) {
         throw new TypeError('only functions or strings are allowed.');
     }
 
+
+    function array() {
+        return _.chain(arguments).flatten().compact().value();
+    }
+
     function normalize(action) {
-        if(typeof action === 'string') {
+        if(typeof action === 'string' || typeof action === 'function') {
             action = { handler: action };
         }
 
-        _.each(['handler', 'observer', 'pre', 'post'], function(key) {
-            action[key] = _.map(action[key], coerce);
+        _.each(['observer', 'pre', 'post'], function(key) {
+            action[key] = _.map(array(action[key]), coerce);
         });
 
         action.handler = coerce(action.handler);
@@ -40,20 +46,22 @@ module.exports = function(actions, env, options) {
     }
 
     function compose(action) {
-        var chain, observer;
+        var chain, observers;
 
         action      = normalize(action);
-        chain       = [action.pre, action.handler, action.post];
-        observer    = [action.observer];
+        chain       = array(action.pre, action.handler, action.post);
+        observers   = array(action.observer);
 
-        chain       = async.compose(_.flatten(chain));
-        observer    = async.compose(_.flatten(observer));
+        var iterator = function(input, fn, cb) { fn(env, input, cb); };
 
-        return function(env, input, cb) {
-            chain(env, input, function(err, output) {
-                observer(env, input, output, err);
+        return function(input, cb) {
+            async.reduce(chain, input, iterator, function(err, output) {
+                observers.forEach(function(observer) {
+                    observer(env, output, err);
+                });
                 cb(err, output);
             });
+
         };
     }
 
@@ -64,7 +72,7 @@ module.exports = function(actions, env, options) {
             throw new Error('dispatcher cannot find action named "' + name + '"');
         }
 
-        handler(name, input, cb);
+        handler(input, cb);
     }
 
     return dispatch;
