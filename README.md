@@ -48,12 +48,13 @@ var config = {
   }
 };
 
+// give logicbox an application environment and config, and you are good to go.
 var dispatch = require('logicbox')(env, config);
 
-// in a hypothetical http server request
 server.post('/users', function(req, res) {
   var user = request.params.user;
 
+  // dispatch 'createUser' action with user as the input
   dispatch('createUser', user, function(err, user) {
     if(err) { return response.error(err); }
     response.end(user);
