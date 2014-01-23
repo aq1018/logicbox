@@ -1,6 +1,6 @@
 {
   "name": "logicbox",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Implement application boundary interfaces with a chain of responsibility",
   "main": "index.js",
   "scripts": {
