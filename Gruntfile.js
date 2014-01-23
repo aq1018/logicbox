@@ -69,6 +69,6 @@ module.exports = function(grunt) {
     grunt.registerTask('cov', ['jshint', 'mochacov:covHtml']);
     grunt.registerTask('ci', ['test', 'mochacov:coveralls']);
     grunt.registerTask('release:npm', ['exec:releaseNpm']);
-    grunt.registerTask('release:bower', ['exec:releaseNpm']);
+    grunt.registerTask('release:bower', ['exec:releaseBower']);
     grunt.registerTask('release', ['release:npm', 'release:bower']);
 };
