@@ -1,7 +1,7 @@
 {
   "name": "logicbox",
   "version": "0.2.1",
-  "description": "Implement application boundary interfaces with a chain of responsibility",
+  "description": "Organize your application logic into manageable components",
   "main": "index.js",
   "config": {
     "blanket": {
