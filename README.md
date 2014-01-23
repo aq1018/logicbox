@@ -4,6 +4,8 @@ logicbox.js
 [![NPM version](https://badge.fury.io/js/logicbox.png)](http://badge.fury.io/js/logicbox)
 [![Build Status](https://travis-ci.org/aq1018/logicbox.png?branch=master)](https://travis-ci.org/aq1018/logicbox)
 [![Coverage Status](https://coveralls.io/repos/aq1018/logicbox/badge.png)](https://coveralls.io/r/aq1018/logicbox)
+[![Dependency Status](https://david-dm.org/aq1018/logicbox.png?theme=shields.io)](https://david-dm.org/aq1018/logicbox)
+[![devDependency Status](https://david-dm.org/aq1018/logicbox/dev-status.png?theme=shields.io)](https://david-dm.org/aq1018/logicbox#info=devDependencies)
 
 Logicbox is a utility to organize your application logic into managable components seprate from your transport layer. The concept of this module is inspired by [Architecture the Lost Years keynote](http://www.confreaks.com/videos/759-rubymidwest2011-keynote-architecture-the-lost-years) by [Robert Martin](http://en.wikipedia.org/wiki/Robert_Cecil_Martin) and the implementation is inspired by [substation](https://github.com/snusnu/substation).
 
