@@ -4,7 +4,7 @@
   "description": "Implement application boundary interfaces with a chain of responsibility",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha -R spec ./test/*.js"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/aq1018/logicbox",
   "dependencies": {
-    "async": "*",
+    "async": "~0.2.9",
     "underscore": "~1.5.2"
   },
   "devDependencies": {
