@@ -11,27 +11,35 @@ module.exports = function(grunt) {
             }
         },
 
-        mochaTest: {
+        mochacov: {
+            coveralls: {
+                options: {
+                    coveralls: true
+                }
+            },
+            covHtml: {
+                options: {
+                    reporter: 'html-cov',
+                    output: 'coverage/index.html'
+                }
+            },
             test: {
                 options: {
-                    reporter: 'spec',
-                },
-                src: ['test/**/*.test.js']
-            }
-        },
-
-        coveralls: {
+                    reporter: 'spec'
+                }
+            },
             options: {
-                src: 'coverage/lcov.info'
+                files: 'test/*.test.js'
             }
         }
     });
 
     grunt.loadNpmTasks('grunt-release');
     grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-mocha-test');
-    grunt.loadNpmTasks('grunt-coveralls');
+    grunt.loadNpmTasks('grunt-mocha-cov');
 
     grunt.registerTask('default', ['test']);
-    grunt.registerTask('test', ['jshint', 'mochaTest']);
+    grunt.registerTask('test', ['jshint', 'mochacov:test']);
+    grunt.registerTask('cov', ['jshint', 'mochacov:covHtml']);
+    grunt.registerTask('ci', ['test', 'mochacov:coveralls']);
 };
