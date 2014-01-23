@@ -122,7 +122,8 @@
         "after",
         "beforeEach",
         "afterEach",
-        "module"
+        "module",
+        "define"
     ],
     "indent"        : 4         // Specify indentation spacing
 }
