@@ -47,8 +47,8 @@
     "chai": "~1.8.1",
     "grunt": "~0.4.2",
     "grunt-cli": "~0.1.12",
-    "grunt-release": "~0.6.0",
     "grunt-contrib-jshint": "~0.8.0",
-    "grunt-mocha-cov": "~0.2.0"
+    "grunt-mocha-cov": "~0.2.0",
+    "grunt-bump": "0.0.13"
   }
 }

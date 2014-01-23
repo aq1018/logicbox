@@ -31,10 +31,17 @@ module.exports = function(grunt) {
             options: {
                 files: 'test/*.test.js'
             }
+        },
+
+        bump: {
+            options: {
+                files: ['package.json', 'component.json', 'bower.json'],
+                commitFiles: '-a'
+            }
         }
     });
 
-    grunt.loadNpmTasks('grunt-release');
+    grunt.loadNpmTasks('grunt-bump');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-mocha-cov');
 
