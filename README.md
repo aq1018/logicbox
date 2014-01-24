@@ -115,12 +115,34 @@ module.exports = {
 
 The `action object` must have a `handler`, and can optionally specify `pre`, `post`, `observer` keys. `handler` can accept string or function. `pre`, `post`, `observer` can accept string, function or array.
 
+Global processors and observers
+-------------------------------
+
+```javascript
+// config.js
+module.exports = {
+  global: {
+    pre:  [
+      // ...
+    ],
+    post: [
+      // ...
+    ],
+    observer: [
+      // ...
+    ]
+  }
+}
+```
+
+Similarly, you can define global `pre`, `post`, `observer`.
+
 Execution Order
 ---------------
 
-The order is: `pre -> handler -> post`. Each processor / handler's output becomes the input of the next. If an error is returned in any part of the chain, the execution is halted, and the callback function will be run with the error. If the entire chain is completed, the callback is invoked with the output of the last handler / processor in the chain.
+The order is: `global.pre -> pre -> handler -> post -> global.post`. Each processor / handler's output becomes the input of the next. If an error is returned in any part of the chain, the execution is halted, and the callback function will be run with the error. If the entire chain is completed, the callback is invoked with the output of the last handler / processor in the chain.
 
-`observer`s will be invoked in parallel after the completion of the `pre -> handler -> post` chain. observers have the signature of `function(env, output, err);` and they do not have callbacks or return anything.
+`observer`s will be invoked after the completion of the chain. observers have the signature of `function(env, output, err);` and they do not have callbacks or return anything. The order for observers is `observer -> global.observer`.
 
 
 Signatures
