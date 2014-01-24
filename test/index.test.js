@@ -53,6 +53,8 @@ var config = {
 
         testRequire: 'usecases/hello',
 
+        testActionConfig: 'usecases/actionConfig',
+
         testObserver: {
             handler: hello,
             observer: observer
@@ -92,6 +94,14 @@ describe("logicbox", function() {
         it("requires the handler", function() {
             dispatch('testRequire', 'world', function(err, output) {
                 var expected = [[['world', 'pre'],'hello' ],'post' ];
+                expect(output).to.eql(expected);
+                expect(logs[0]).to.eql('global');
+            });
+        });
+
+        it("requires action config object", function() {
+            dispatch('testActionConfig', 'world', function(err, output) {
+                var expected = [[[['world', 'pre'], 'pre'],'hello' ],'post' ];
                 expect(output).to.eql(expected);
                 expect(logs[0]).to.eql('global');
             });

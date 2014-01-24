@@ -50,7 +50,11 @@
         }
 
         function normalize(action) {
-            if(typeof action === 'string' || typeof action === 'function') {
+            if(typeof action === 'string') {
+                action = _require(action);
+            }
+
+            if(typeof action === 'function') {
                 action = { handler: action };
             }
 
@@ -64,9 +68,9 @@
         function compose(action) {
             var chain, observers;
 
-            action      = normalize(action);
+            action = normalize(action);
 
-            chain       = normalizeArray(
+            chain  = normalizeArray(
                 global.pre,
                 action.pre,
                 action.handler,
@@ -74,7 +78,7 @@
                 global.post
             );
 
-            observers   = normalizeArray(
+            observers = normalizeArray(
                 action.observer,
                 global.observer
             );
