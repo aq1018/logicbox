@@ -1,6 +1,6 @@
 'use strict';
 
 module.exports = function(env, input, cb) {
-    var output = "hello " + input;
+    var output = [input, "hello"];
     cb(null, output);
 };

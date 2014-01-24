@@ -20,23 +20,33 @@
         basePath: process.cwd()
     };
 
-    return function(env, options) {
-        var actions;
+    return function(env, config) {
+        var actions = config.actions;
+        var global  = config.global || {};
+        var options = _.extend({}, DEFAULT_OPTIONS, config.options);
 
         function _require(file) {
             file = require('path').resolve(options.basePath, file);
             return require(file);
         }
 
-        function coerce(thing) {
+        function normalizeFn(thing) {
             if('function' === typeof thing) { return thing; }
             if('string' === typeof thing) { return _require(thing); }
+            if(_.isArray(thing)) { return _.map(thing, normalizeFn); }
 
             throw new TypeError('only functions or strings are allowed.');
         }
 
-        function array() {
+        function normalizeArray() {
             return _.chain(arguments).flatten().compact().value();
+        }
+
+        function normalizeProcessors(action) {
+            return _.reduce(['observer', 'pre', 'post'], function(memo, key) {
+                memo[key] = normalizeFn(normalizeArray(action[key]));
+                return memo;
+            }, {});
         }
 
         function normalize(action) {
@@ -44,11 +54,9 @@
                 action = { handler: action };
             }
 
-            _.each(['observer', 'pre', 'post'], function(key) {
-                action[key] = _.map(array(action[key]), coerce);
-            });
+            action = _.extend({}, action, normalizeProcessors(action));
 
-            action.handler = coerce(action.handler);
+            action.handler = normalizeFn(action.handler);
 
             return action;
         }
@@ -57,8 +65,19 @@
             var chain, observers;
 
             action      = normalize(action);
-            chain       = array(action.pre, action.handler, action.post);
-            observers   = array(action.observer);
+
+            chain       = normalizeArray(
+                global.pre,
+                action.pre,
+                action.handler,
+                action.post,
+                global.post
+            );
+
+            observers   = normalizeArray(
+                action.observer,
+                global.observer
+            );
 
             var iterator = function(input, fn, cb) { fn(env, input, cb); };
 
@@ -73,9 +92,9 @@
             };
         }
 
-        options = _.extend({}, DEFAULT_OPTIONS, options);
+        global = normalizeProcessors(global);
 
-        actions = _.reduce(options.actions, function(memo, action, name) {
+        actions = _.reduce(config.actions, function(memo, action, name) {
             memo[name] = compose(action);
             return memo;
         }, {});

@@ -16,12 +16,12 @@ var env = {
 };
 
 var hello = function(env, input, cb) {
-    var output = "hello " + input;
+    var output = [ input, "hello" ];
     cb(null, output);
 };
 
 var world = function(env, input, cb) {
-    var output = input + " world";
+    var output = [input, "world"];
     cb(null, output);
 };
 
@@ -37,8 +37,16 @@ var observer = function(env, output, err) {
     }
 };
 
-var options = {
-    basePath: require('path').join(process.cwd(), 'test'),
+var config = {
+    options: {
+        basePath: require('path').join(process.cwd(), 'test'),
+    },
+
+    global: {
+        pre: function(env, input, cb){ cb(null, [input, 'pre'] ); },
+        post: function(env, input, cb){ cb(null, [input, 'post']); },
+        observer: function(env){ env.logger.log('global'); }
+    },
 
     actions: {
         testHandler: hello,
@@ -64,7 +72,7 @@ var options = {
     }
 };
 
-var dispatch = logicbox(env, options);
+var dispatch = logicbox(env, config);
 
 
 describe("logicbox", function() {
@@ -75,13 +83,17 @@ describe("logicbox", function() {
     describe("handler", function() {
         it("calls the handler", function() {
             dispatch('testHandler', 'world', function(err, output) {
-                expect(output).to.eql('hello world');
+                var expected = [[['world', 'pre'],'hello' ],'post' ];
+                expect(output).to.eql(expected);
+                expect(logs[0]).to.eql('global');
             });
         });
 
         it("requires the handler", function() {
             dispatch('testRequire', 'world', function(err, output) {
-                expect(output).to.eql('hello world');
+                var expected = [[['world', 'pre'],'hello' ],'post' ];
+                expect(output).to.eql(expected);
+                expect(logs[0]).to.eql('global');
             });
         });
     });
@@ -89,8 +101,10 @@ describe("logicbox", function() {
     describe("observer", function(){
         it("calls the observer", function() {
             dispatch('testObserver', 'world', function(err, output) {
-                expect(output).to.eql('hello world');
-                expect(logs[0]).to.eql('hello world');
+                var expected = [[['world', 'pre'],'hello' ],'post' ];
+                expect(output).to.eql(expected);
+                expect(logs[0]).to.eql(expected.toString());
+                expect(logs[1]).to.eql('global');
             });
         });
     });
@@ -98,8 +112,10 @@ describe("logicbox", function() {
     describe("pre and post", function(){
         it("calls pre and post", function() {
             dispatch('hello3', 'world', function(err, output) {
-                expect(output).to.eql('hello hello world world');
-                expect(logs[0]).to.eql('hello hello world world');
+                var expected = [ [ [ [ [ 'world', 'pre' ], 'hello' ], 'hello' ], 'world' ], 'post' ];
+                expect(output).to.eql(expected);
+                expect(logs[0]).to.eql(expected.toString());
+                expect(logs[1]).to.eql('global');
             });
         });
     });
@@ -109,6 +125,7 @@ describe("logicbox", function() {
             dispatch('hello4', 'world', function(err, output) {
                 expect(output).to.be.undefined;
                 expect(logs[0]).to.eql('Error: oops');
+                expect(logs[1]).to.eql('global');
             });
         });
     });
