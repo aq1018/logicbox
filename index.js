@@ -43,26 +43,22 @@
         }
 
         function normalizeProcessors(action) {
-            return _.reduce(['observer', 'pre', 'post'], function(memo, key) {
+            return _.reduce(['handler', 'observer', 'pre', 'post'], function(memo, key) {
                 memo[key] = normalizeFn(normalizeArray(action[key]));
                 return memo;
             }, {});
         }
 
         function normalize(action) {
-            if(typeof action === 'string') {
+            if(_.isString(action)) {
                 action = _require(action);
             }
 
-            if(typeof action === 'function') {
+            if(_.isFunction(action) || _.isArray(action)) {
                 action = { handler: action };
             }
 
-            action = _.extend({}, action, normalizeProcessors(action));
-
-            action.handler = normalizeFn(action.handler);
-
-            return action;
+            return normalizeProcessors(action);
         }
 
         function compose(action) {
