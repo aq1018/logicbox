@@ -70,6 +70,11 @@ var config = {
             pre: [ hello ],
             post: [ world ],
             observer: observer
+        },
+
+        hello5: [ hello, world ],
+        hello6: {
+            handler: [ hello, world ],
         }
     }
 };
@@ -102,6 +107,22 @@ describe("logicbox", function() {
         it("requires action config object", function() {
             dispatch('testActionConfig', 'world', function(err, output) {
                 var expected = [[[['world', 'pre'], 'pre'],'hello' ],'post' ];
+                expect(output).to.eql(expected);
+                expect(logs[0]).to.eql('global');
+            });
+        });
+
+        it("runs handlers array", function() {
+            dispatch('hello5', 'foo', function(err, output) {
+                var expected = [[[['foo', 'pre'], 'hello'],'world' ],'post' ];
+                expect(output).to.eql(expected);
+                expect(logs[0]).to.eql('global');
+            });
+        });
+
+        it("runs action config object with handlers array", function() {
+            dispatch('hello6', 'foo', function(err, output) {
+                var expected = [[[['foo', 'pre'], 'hello'],'world' ],'post' ];
                 expect(output).to.eql(expected);
                 expect(logs[0]).to.eql('global');
             });
