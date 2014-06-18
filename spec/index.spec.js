@@ -39,7 +39,7 @@ var observer = function(env, output, err) {
 
 var config = {
   options: {
-    basePath: require('path').join(process.cwd(), 'test'),
+    basePath: require('path').join(process.cwd(), 'spec'),
   },
 
   global: {
