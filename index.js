@@ -74,21 +74,18 @@
     function compose(action) {
       action = normalize(action);
 
-      var chain = normalizeArray(global.pre, action.pre, action.handler);
-      var post = normalizeArray(action.post, global.post);
+      var chain = normalizeArray(global.pre, action.pre, action.handler, action.post, global.post);
       var observer = normalizeArray(action.observer, global.observer);
 
       return function(input, cb) {
         async.reduce(chain, input, iterator, function(err, output) {
-          observer.forEach(function(fn) {
-            fn(env, output, err);
+          observer = _.map(observer, function(fn) {
+            return fn.bind(null, env, output, err);
           });
 
-          if (err) {
-            return cb(err);
-          }
-
-          async.reduce(post, output, iterator, cb);
+          async.parallel(observer, function() {
+            cb(err, output);
+          });
         });
       };
     }
