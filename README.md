@@ -140,9 +140,9 @@ Similarly, you can define global `pre`, `post`, `observer`.
 Execution Order
 ---------------
 
-The order is: `global.pre -> pre -> handler -> post -> global.post`. Each processor / handler's output becomes the input of the next. If an error is returned in any part of the chain, the execution is halted, and the callback function will be run with the error. If the entire chain is completed, the callback is invoked with the output of the last handler / processor in the chain.
+The order is: `global.pre -> pre -> handler -> post -> global.post -> callback`. Each processor / handler's output becomes the input of the next. If an error is returned in any part of the chain, the execution is halted, and the callback function will be run with the error. If the entire chain is completed, the `callback` is invoked with the output of the last handler / processor in the chain.
 
-`observer`s will be invoked after the completion of the chain. observers have the signature of `function(env, output, err);` and they do not have callbacks or return anything. The order for observers is `observer -> global.observer`.
+`observer`s will be invoked after the completion of the chain. observers have the signature of `function(env, output, err, done);` and the done callback does not take any arguments, so errors has to be handled within the observer. The order for observers is `observer -> global.observer`.
 
 
 Signatures
@@ -158,7 +158,9 @@ The `callback` is a standard node.js style callback, and has the following signa
 
 Observers have the following signature:
 
-`function(env, output, error)`
+`function(env, output, error, done)`
+
+The done callback should be called when a observer is completed. Errors inside Observers should be handled internally. As the `done` callback does not accept `error`s.
 
 Example Handler
 ---------------
