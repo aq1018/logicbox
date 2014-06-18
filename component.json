@@ -8,8 +8,8 @@
     "architecture"
   ],
   "dependencies": {
-    "component/underscore": "*",
-    "caolan/async": "*"
+    "component/underscore": ">=1.4.0",
+    "caolan/async": ">=0.2.0"
   },
   "scripts": [
     "index.js"

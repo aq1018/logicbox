@@ -4,7 +4,7 @@
   "main": "index.js",
   "ignore" : ["test", "*.yml", ".*", "Gruntfile.js"],
   "dependencies": {
-    "async": "~0.2.0",
-    "underscore": "~1.5.2"
+    "async": ">=0.2.0",
+    "underscore": ">=1.4.0"
   }
 }
