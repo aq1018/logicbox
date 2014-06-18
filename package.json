@@ -1,6 +1,6 @@
 {
   "name": "logicbox",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Organize your application logic into manageable components",
   "main": "index.js",
   "config": {
