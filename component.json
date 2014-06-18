@@ -2,7 +2,7 @@
   "name": "logicbox",
   "repo": "aq1018/logicbox",
   "description": "Organize your application logic into manageable components",
-  "version": "0.5.1",
+  "version": "0.5.0",
   "main": "index.js",
   "keywords": [
     "architecture"
