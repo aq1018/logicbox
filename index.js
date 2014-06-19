@@ -79,11 +79,11 @@
 
       return function(input, cb) {
         async.reduce(chain, input, iterator, function(err, output) {
-          observer = _.map(observer, function(fn) {
+          var fns = _.map(observer, function(fn) {
             return fn.bind(null, env, output, err);
           });
 
-          async.parallel(observer, function() {
+          async.parallel(fns, function() {
             cb(err, output);
           });
         });
